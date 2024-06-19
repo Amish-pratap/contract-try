@@ -14,7 +14,6 @@ const CreateTaskForm = () => {
       description: "",
     },
     onSubmit: (values) => {
-      // Handle form submission
       getQueryClient().todo.createTask.mutation({
         body: {
           title: values.title,

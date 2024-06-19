@@ -6,7 +6,7 @@ const createTask = () => {
   return (
     <div>
       <CreateTaskForm />
-      <div>Task List ----</div>
+
       <TaskList />
     </div>
   );
