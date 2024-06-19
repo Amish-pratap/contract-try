@@ -5,6 +5,14 @@ export const CreateDto = z.object({
   description: z.string(),
 });
 
+export const UpdateDto = z.object({
+  id: z.number(),
+  isCompleted: z.boolean(),
+});
+export const DeleteDto = z.object({
+  id: z.string(),
+});
+
 export const CommonSuccessSchema = z.object({
   isSuccess: z.boolean(),
   message: z.string(),
@@ -29,4 +37,10 @@ export const TaskResponseDto = z.object({
   total: z.number(),
   page: z.number(),
   limit: z.number(),
+});
+
+export const UpdateResponseDto = CommonSuccessSchema.extend({
+  id: z.number(),
+  title: z.string(),
+  isCompleted: z.boolean(),
 });

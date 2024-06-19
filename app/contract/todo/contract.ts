@@ -1,5 +1,12 @@
 import { initContract } from "@ts-rest/core";
-import { CreateDto, CreateTaskResponseDto, TaskResponseDto } from "./type";
+import {
+  CommonSuccessSchema,
+  CreateDto,
+  CreateTaskResponseDto,
+  TaskResponseDto,
+  UpdateDto,
+  UpdateResponseDto,
+} from "./type";
 import { z } from "zod";
 
 const c = initContract();
@@ -23,6 +30,25 @@ export const todoContract = c.router(
       }),
       responses: {
         200: TaskResponseDto,
+      },
+    },
+    updateTask: {
+      method: "PUT",
+      path: "/tasks",
+      body: UpdateDto,
+      responses: {
+        200: UpdateResponseDto,
+      },
+    },
+    deleteTask: {
+      method: "DELETE",
+      path: "/tasks/:id",
+      body: z.object({}),
+      pathParams: z.object({
+        id: z.coerce.number(),
+      }),
+      responses: {
+        200: CommonSuccessSchema,
       },
     },
   },

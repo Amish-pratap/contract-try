@@ -50,4 +50,31 @@ export class TodoController
       },
     };
   }
+  @TsRest(todoContractController.updateTask)
+  async updateTask(@TsRestRequest() { body }: TodoRequestShape['updateTask']) {
+    const data = await this.todoService.update(body);
+    return {
+      status: 200 as const,
+      body: {
+        isSuccess: true,
+        message: 'task list',
+        id: data.id,
+        title: data.title,
+        isCompleted: data.isCompleted,
+      },
+    };
+  }
+  @TsRest(todoContractController.deleteTask)
+  async deleteTask(
+    @TsRestRequest() { params }: TodoRequestShape['deleteTask'],
+  ) {
+    await this.todoService.delete({ id: params.id });
+    return {
+      status: 200 as const,
+      body: {
+        isSuccess: true,
+        message: 'task list',
+      },
+    };
+  }
 }

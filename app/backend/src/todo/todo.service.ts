@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { EntityRepository } from '@mikro-orm/core';
+import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ToDo } from '../entities/todo.entity';
 import { EntityManager } from '@mikro-orm/postgresql';
@@ -23,6 +23,7 @@ export class TodoService {
     const [tasks, total] = await this.todoRepository.findAndCount(
       {},
       {
+        orderBy: { createdAt: 'asc' },
         limit,
         offset: (page - 1) * limit,
       },
@@ -31,5 +32,15 @@ export class TodoService {
       tasks: tasks.map((e) => new taskListRo(e)),
       total,
     };
+  }
+  async update(dto: TodoRequestShape['updateTask']['body']) {
+    const todo = await this.todoRepository.findOneOrFail({ id: dto.id });
+    wrap(todo).assign({ isCompleted: dto.isCompleted });
+    await this.em.flush();
+    return todo;
+  }
+  async delete(dto: TodoRequestShape['deleteTask']['params']) {
+    const todo = await this.todoRepository.findOneOrFail({ id: dto.id });
+    await this.em.removeAndFlush(todo);
   }
 }
